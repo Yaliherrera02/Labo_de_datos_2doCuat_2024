@@ -33,7 +33,6 @@ def mezclar(cadena1, cadena2) -> str:
     s = ""
     i = 0
     
-    # Intercalar elementos hasta que una de las cadenas se termine
     while i < len(cadena1) and i < len(cadena2):
         s += cadena1[i]
         s += cadena2[i]
