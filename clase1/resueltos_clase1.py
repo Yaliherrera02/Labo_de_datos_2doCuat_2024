@@ -1,3 +1,5 @@
+from math import sqrt,floor,ceil
+import math
 """def caux(n:int,m:int)->int:
     return n+m
 
@@ -33,20 +35,43 @@ def mezclar(cadena1, cadena2) -> str:
     s = ""
     i = 0
     
-    while i < len(cadena1) and i < len(cadena2):
+    while i < len(cadena1) and i < len(cadena2): #Termino todas las letras de cada cadena
         s += cadena1[i]
         s += cadena2[i]
         i += 1
     
         
-    s += cadena1[i:]
+    s += cadena1[i:] #parte del string que va desde la posición i hasta el final"
     s += cadena2[i:]
 
     return s
 
 # Ejemplos
-print(mezclar("Pepe", "Jose"))    # Salida: "PJeopsee"
-print(mezclar("Pepe", "Josefa"))  # Salida: "PJeopseefa"
+"""print(mezclar("Pepe", "Josefina"))   #obs: no agrega nada en la linea 42 porque ya se termino el str Pepe, ejecuta en la l43
+print(mezclar("Josefina", "Pepe"))"""  #Obs: Si ejecuta en la linea 42, y no hace nada en la l43
 
-
-mezclar("acdfghi","be")
+def mezclar2 (cadena1, cadena2) -> str:
+    s = ""
+    i = 0
+    while i < len(cadena1) and i < len(cadena2):
+           s += cadena1[i]
+           s += cadena2[i]
+           i += 1
+           
+    for i in range (i,len(cadena1)):
+        s+=cadena1[i]
+        
+    for i in range (i,len(cadena2)):
+        s+=cadena2[i]
+        
+    return s
+"""print(mezclar2("Pepe", "Josefina"))   
+print(mezclar2("Josefina", "Pepe"))"""
+        
+def pago_del_credito (años:int)->float:
+    cantidad_de_meses:int= años*12
+    pago_mensual:float=2684.11
+    pago_final:float=pago_mensual*cantidad_de_meses
+    return pago_final
+    
+print(pago_del_credito(30))
