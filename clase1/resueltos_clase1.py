@@ -72,6 +72,42 @@ def pago_del_credito (años:int)->float:
     cantidad_de_meses:int= años*12
     pago_mensual:float=2684.11
     pago_final:float=pago_mensual*cantidad_de_meses
-    return pago_final
+    return round(pago_final,2)
     
 print(pago_del_credito(30))
+
+def calcular_hipoteca_con_pagos_extra():
+    saldo = 500000
+    tasa_mensual = 0.05 / 12
+    pago_fijo = 2684.11
+    pago_extra = 1000
+    total_pagado = 0
+    meses = 0
+
+    while saldo > 0:
+        # Calcular interés mensual
+        interes = saldo * tasa_mensual
+
+        # Durante los primeros 12 meses, añadir pago extra
+        if meses < 12:
+            pago_total = pago_fijo + pago_extra
+        else:
+            pago_total = pago_fijo
+
+        # Reducir saldo con el pago realizado
+        saldo = saldo + interes - pago_total
+
+        # Asegurarse de no pagar más del saldo pendiente
+        if saldo < 0:
+            pago_total += saldo  # Ajustar el último pago
+            saldo = 0
+
+        # Acumular el total pagado
+        total_pagado += pago_total
+        meses += 1
+
+    return total_pagado, meses
+
+# Llamar a la función e imprimir resultados
+total_pagado, meses = calcular_hipoteca_con_pagos_extra()
+print(f'Total pagado: ${total_pagado:.2f} en {meses} meses.')
