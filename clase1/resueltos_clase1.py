@@ -97,7 +97,7 @@ def calcular_hipoteca_con_pagos_extra():
         # Reducir saldo con el pago realizado
         saldo = saldo + interes - pago_total
 
-        # Asegurarse de no pagar más del saldo pendiente
+        # Me aseguro de no pagar más del saldo pendiente
         if saldo < 0:
             pago_total += saldo  # Ajustar el último pago
             saldo = 0
@@ -111,3 +111,32 @@ def calcular_hipoteca_con_pagos_extra():
 # Llamar a la función e imprimir resultados
 total_pagado, meses = calcular_hipoteca_con_pagos_extra()
 print(f'Total pagado: ${total_pagado:.2f} en {meses} meses.')
+
+def calcular_hipoteca_con_pagos_extra2(pago_extra_monto:float,pago_extra_mes_comienzo:int,pago_extra_mes_fin:int)->float:
+    saldo = 500000
+    tasa_mensual = 0.05 / 12
+    pago_fijo = 2684.11
+    total_pagado = 0
+    meses = 0
+    while saldo > 0:
+        # Calcular interés mensual
+        interes = saldo * tasa_mensual
+
+        # Durante los primeros 12 meses, añadir pago extra
+        if pago_extra_mes_comienzo< meses <pago_extra_mes_fin :
+            pago_total = pago_fijo + pago_extra_monto
+        else:
+            pago_total = pago_fijo
+        saldo = saldo + interes - pago_total
+
+        # Me aseguro de no pagar más del saldo pendiente
+        if saldo < 0:
+            pago_total += saldo  # Ajustar el último pago
+            saldo = 0
+
+        # Acumular el total pagado
+        total_pagado += pago_total
+        meses += 1
+
+    return total_pagado
+print(calcular_hipoteca_con_pagos_extra2(1000,61,360))
