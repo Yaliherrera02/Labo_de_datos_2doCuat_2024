@@ -137,6 +137,31 @@ def calcular_hipoteca_con_pagos_extra2(pago_extra_monto:float,pago_extra_mes_com
         # Acumular el total pagado
         total_pagado += pago_total
         meses += 1
-
     return total_pagado
 print(calcular_hipoteca_con_pagos_extra2(1000,61,360))
+
+def  traductor_geringoso(lista):
+    diccionario = {}
+    for i in range(len(lista)):
+        nueva_palabra=""
+        palabra=lista[i]
+        for c in palabra:
+            if c=="a":
+                nueva_palabra+=c+"pa"
+            elif c=="e":
+                nueva_palabra+=c+"pe"
+            elif c=="i":
+                nueva_palabra+= c+"pi"
+            elif c=="o":
+                nueva_palabra+=c+"po"
+            elif c=="u":
+                nueva_palabra+=c+"pu"
+            else:
+                nueva_palabra+=c           
+    
+        diccionario[palabra]=nueva_palabra
+            
+
+    return diccionario
+
+print(traductor_geringoso(["manzana","Pera","Banana",]))
