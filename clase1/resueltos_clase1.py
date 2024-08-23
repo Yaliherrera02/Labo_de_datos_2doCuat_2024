@@ -1,6 +1,6 @@
 from math import sqrt,floor,ceil
 import math
-"""def caux(n:int,m:int)->int:
+def caux(n:int,m:int)->int:
     return n+m
 
 print(caux(5,3))
@@ -15,22 +15,23 @@ print(abc[4:8]) #imprime de posicion 4 hasta 8
 my_list=["Python",True,5,(a,b)]
 print (my_list)
 
+#EJERCICIO 1
 def pertenece (l:list,e:int)->bool:
     i:int=0
     while i<len(l):
       if l[i]==e:
           return True
       i+=1
-    return False"""
-"""def mas_larga (l1,l2)->list:
+    return False
+#EJERCICIO 2
+def mas_larga (l1,l2)->list:
     if len(l1)>=len(l2):
         return l1
     else:
         return l2
-print(mas_larga([],[1,2,3]))"""
+print(mas_larga([],[1,2,3]))
 
-
-
+#EJERCICIO 3
 def mezclar(cadena1, cadena2) -> str:
     s = ""
     i = 0
@@ -67,7 +68,8 @@ def mezclar2 (cadena1, cadena2) -> str:
     return s
 """print(mezclar2("Pepe", "Josefina"))   
 print(mezclar2("Josefina", "Pepe"))"""
-        
+
+#EJERCICIO 4
 def pago_del_credito (años:int)->float:
     cantidad_de_meses:int= años*12
     pago_mensual:float=2684.11
@@ -140,7 +142,8 @@ def calcular_hipoteca_con_pagos_extra2(pago_extra_monto:float,pago_extra_mes_com
     return total_pagado
 print(calcular_hipoteca_con_pagos_extra2(1000,61,360))
 
-def  traductor_geringoso(lista):
+#EJERCICIO 5
+def  traductor_geringoso(lista:list[str])->dict:
     diccionario = {}
     for i in range(len(lista)):
         nueva_palabra=""
