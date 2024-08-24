@@ -167,4 +167,4 @@ def  traductor_geringoso(lista:list[str])->dict:
 
     return diccionario
 
-print(traductor_geringoso(["manzana","Pera","Banana",]))
+print(traductor_geringoso(["manzana","Pera","Banana","Naranja",]))
