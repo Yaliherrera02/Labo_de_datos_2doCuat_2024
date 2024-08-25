@@ -168,3 +168,18 @@ def  traductor_geringoso(lista:list[str])->dict:
     return diccionario
 
 print(traductor_geringoso(["manzana","Pera","Banana","Naranja",]))
+print(f'hola \t todo \t bien')
+
+def tablas_de_multiplicar():
+    i=0
+    primer_fila=""
+    while i<=9:
+        print(f"\t{i}", end="")
+        i+=1
+    print("\n ---------------------------------------------------------------------------------")
+    for j in range (0,10):
+        for k in range(0,10):
+            print(f"{j}: {k}")
+
+
+tablas_de_multiplicar()
