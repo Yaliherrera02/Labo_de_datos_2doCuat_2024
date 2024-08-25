@@ -26,3 +26,8 @@ print(f"El coseno de {x} radianes es {coseno}")
 # Ejemplo 4: MCD (Máximo Común Divisor)
 mcd = math.gcd(15, 12)
 print(f"El MCD de 15 y 12 es {mcd}")
+
+def leer_parque(nombre_archivo,parque:str):
+    with open (nombre_archivo,"r") as archivo:
+    lineas=archivo.read()
+    
