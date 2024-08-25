@@ -27,7 +27,51 @@ print(f"El coseno de {x} radianes es {coseno}")
 mcd = math.gcd(15, 12)
 print(f"El MCD de 15 y 12 es {mcd}")
 
-def leer_parque(nombre_archivo,parque:str):
+"""def leer_parque(nombre_archivo,parque:str):
     with open (nombre_archivo,"r") as archivo:
-    lineas=archivo.read()
+        lineas=archivo.read()"""
+
+
+import csv
+
+f = open("arboles.csv")
+filas = csv.reader(f)
+for fila in filas:
+    print(fila)
+f.close()
+
+
+import csv
+
+def imprimir_todas_las_lineas():
+    archivo_csv = "arboles.csv"
+    # Abrimos el archivo y lo asociamos a la variable 'archivo_original'
+    with open(archivo_csv, "r") as archivo_original:
+        # Usamos csv.reader para leer el archivo
+        filas = csv.reader(archivo_original)
+        # Iteramos sobre cada fila
+        for fila in filas:
+            print(fila)
+
+# Llamamos a la función para probarla
+imprimir_todas_las_lineas()
+
+
+f = open("arboles.csv")
+filas = csv.reader(f)
+encabezado = next(filas)  # un paso del iterador
+for fila in filas:        # ahora el iterador sigue desde la segunda fila
+    print(fila)
+f.close()
+
+
+
+
+
+
+
+
+
+
+
     
