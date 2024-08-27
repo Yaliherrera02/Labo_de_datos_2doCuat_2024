@@ -1,6 +1,7 @@
 import random
-"""prueba=random.random()
-print(prueba)"""
+import numpy as np
+prueba=random.random()
+print(prueba)
 
 random.seed(34)
 prueba=random.random()
@@ -31,7 +32,7 @@ print(f"El MCD de 15 y 12 es {mcd}")
     with open (nombre_archivo,"r") as archivo:
         lineas=archivo.read()"""
 
-
+"""
 import csv
 
 f = open("arboles.csv")
@@ -39,7 +40,6 @@ filas = csv.reader(f)
 for fila in filas:
     print(fila)
 f.close()
-
 
 import csv
 
@@ -62,16 +62,64 @@ filas = csv.reader(f)
 encabezado = next(filas)  # un paso del iterador
 for fila in filas:        # ahora el iterador sigue desde la segunda fila
     print(fila)
-f.close()
+f.close()"""
 
-
-
-
-
-
-
-
-
-
-
+"""def lanzar_dados():
+    # Establecemos una semilla fija para asegurar reproducibilidad
+    #random.seed(10)
     
+    resultados = []
+    for i in range(0,5):  # Tiramos 5 veces el dado
+        # Generamos un número aleatorio entre 1 y 6
+        resultado = random.randint(1, 6)
+        resultados.append(resultado)
+    
+    return resultados
+# Ejecución de la simulación
+
+print(lanzar_dados())"""
+
+
+def generala_tirar():
+    result=[]
+    for i in range(0,5): 
+        resultado=random.randint(1,6)
+        result.append(resultado)
+    print(result)
+generala_tirar()
+
+import numpy as np
+a = np.array([1, 2, 3, 4, 5, 6]) # 1 dimensión
+b = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]) # 2 dimensiones
+print(a[0])
+print(b[0])
+print(b[2][3])
+print(b[2,3])
+np.zeros(2) # matriz de ceros del tamaño indicado
+np.zeros((2,3))
+
+
+import csv
+
+print("hola")
+"""def leer_parque(nombre_archivo,parque:str):
+        with open (nombre_archivo,"r" )as archivo_original:
+            filas = csv.reader(archivo_original) 
+            encabezado = next(filas)
+            filas = list(filas) 
+            encabezado= list(encabezado)
+        # Iteramos sobre cada fila
+        lista_con_info= []
+        diccionario ={}
+        for i in range (0, len(filas)):
+            if filas[i][10]==parque:
+                for j in range (0,len(encabezado)): #recorro lista encabezado (donde van a estar las claves)
+                    claves=encabezado[j] #claves= [id_arbol,altura_tot,diametro...]
+                    print(claves)
+                    diccionario[claves]=filas[i][j] # HASTA ACÁ CREE EL PRIMER DICCIONARIO, AHORA NECESITO RECORRER LA SEGUNDA LINEA
+                    print(diccionario[claves])
+                elementos=diccionario
+                print(elementos)
+                lista_con_info.append(elementos)
+        return lista_con_info
+print(leer_parque("arboles.csv","DE PAKISTAN"))"""
