@@ -89,6 +89,7 @@ generala_tirar()
 print("aca")
 
 import numpy as np
+
 a = np.array([1, 2, 3, 4, 5, 6]) # 1 dimensión
 b = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]) # 2 dimensiones
 print(a[1])
@@ -99,8 +100,7 @@ print(np.zeros(2)) # matriz de ceros del tamaño indicado
 np.zeros((2,3))
 
 import csv
-
-print("hola")
+import pandas as pd
 def leer_parque(nombre_archivo,parque:str):
         with open (nombre_archivo,"r") as archivo_original:
             filas = csv.reader(archivo_original) 
