@@ -52,7 +52,7 @@ consultaSQL = """
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
-print(dataframeResultado)
+#print(dataframeResultado)
 
 
 #%%===========================================================================
@@ -372,8 +372,8 @@ dataframeResultado = duckdb.sql(consultaSQL)
 # ----------------------------------------------------------------------------------------------
 persona        = pd.read_csv(carpeta+"persona_ejemplosJoin.csv")
 # ----------------------------------------------------------------------------------------------
+#%%-----------
 # b1.- Vincular las tablas persona y nacionalidades a través de un INNER JOIN
-print("PRUEBA:")
 consultaSQL = """
             SELECT DISTINCT *
             FROM persona
@@ -383,7 +383,9 @@ consultaSQL = """
 
 dataframeResultado = duckdb.sql( consultaSQL)
 #print(dataframeResultado)
-"""
+#%%-----------
+#DE ESTA MANERA DA LO MISMO PORQUE TOMA TODOS LOS REGISTROS DE LOS VALORES COINCIDENTES EN AMBAS TABLAS
+consultaSQL= """
             SELECT DISTINCT *
             FROM nacionalidades
             INNER JOIN persona
@@ -410,6 +412,23 @@ consultaSQL = """
             FROM persona
             LEFT OUTER JOIN nacionalidades
             ON Nacionalidad=IDN;
+              """
+
+dataframeResultado = duckdb.sql(consultaSQL)
+#print(dataframeResultado)
+#%%-----------
+# c'.- Vincular las tablas personas y nacionalidades a través de un LEFT OUTER JOIN. 
+
+
+#The LEFT JOIN keyword returns all records from the left table (table1), and the matching
+# records from the right table (table2). The result is 0 records from the right side, 
+# if there is no match.
+
+consultaSQL = """
+            SELECT DISTINCT *
+            FROM nacionalidades
+            LEFT OUTER JOIN persona
+            ON IDN=Nacionalidad;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
@@ -458,10 +477,10 @@ consultaSQL = """
 
 dataframeResultado = duckdb.sql(consultaSQL)
 
-
+#print(dataframeResultado)
 #%%-----------
 # Ejercicio 03.2.- Retornar el nombre de las personas que realizaron reservas a un valor menor a $200
-
+#Se puede usar INNER JOIN
 consultaSQL = """
             SELECT Nombre
             FROM pasajero
@@ -472,6 +491,7 @@ consultaSQL = """
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
+#print(dataframeResultado)
 
 #%%-----------
 # Ejercicio 03.3.- Obtener Nombre, Fecha y Destino del Viaje de todos los pasajeros que vuelan desde Madrid
@@ -502,7 +522,7 @@ vuelosDesdeMadrid = duckdb.sql(vuelosDesdeMadrid)
 dniPersonasDesdeMadrid= duckdb.sql(dniPersonasDesdeMadrid)
 dataframeResultado =  duckdb.sql(consultaSQL)
 
-print(dataframeResultado)
+#print(dataframeResultado)
 
 #%% # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -536,13 +556,14 @@ dataframeResultado = duckdb.sql(consultaSQL)
     
 consultaSQL = """
             SELECT DISTINCT er.empleado, er.rol, rp.proyecto
-            FROM EmpleadoRol AS er
-            INNER JOIN RolProyecto rp
+            FROM empleadoRol AS er
+            INNER JOIN rolProyecto rp
             ON er.rol=rp.rol;
 
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
 
 #%%===========================================================================
 # Ejercicios SQL - Funciones de agregación
@@ -587,52 +608,63 @@ dataframeResultado = duckdb.sql(consultaSQL)
     
 consultaSQL = """
               SELECT Instancia, COUNT(*) AS Asistieron
-              FROM Examen
+              FROM examen
               GROUP BY Instancia
               HAVING Asistieron < 4
-              ORDER BY Instancia;
+              ORDER BY Instancia DESC;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
+# SI NO SE ACLARA POR DEFAULT LO HACE DE MANERA ASC--> 6 5 4 3 2
 
 #%%-----------
 # c.- Mostrar el promedio de edad de los estudiantes en cada instancia de examen
     
 consultaSQL = """
-
+              SELECT Instancia, AVG(Edad) AS PromedioEdad
+              FROM examen
+              GROUP BY Instancia
+              ORDER BY Instancia;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
+#print(dataframeResultado)
 
 
 #%%===========================================================================
 # Ejercicios SQL - LIKE")
 
-
-
-"""HASTA ACA TERMINO MI TAREA DEL DIAAAAAAAAAAA :)"""
 #=============================================================================
 # a1.- Mostrar cuál fue el promedio de notas en cada instancia de examen, sólo para instancias de parcial.
     
 consultaSQL = """
-
+                  SELECT Instancia,
+                  AVG(Nota) AS NotaPromedio
+                  FROM examen
+                  GROUP BY Instancia
+                  HAVING instancia='Parcial-01' OR
+                  instancia='Parcial-02'
+                  ORDER BY Instancia;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
+
 
 #%%-----------
 # a2.- Mostrar cuál fue el promedio de notas en cada instancia de examen, sólo para instancias de parcial. Esta vez usando LIKE.
     
 consultaSQL = """
-              SELECT Instancia,
-              AVG(Edad) AS PromedioEdad
-              FROM Examen
-              GROUP BY Instancia
-              ORDER BY Instancia;
-
+                  SELECT Instancia,
+                  AVG(Nota) AS NotaPromedio
+                  FROM examen
+                  GROUP BY Instancia
+                  HAVING instancia LIKE 'Parcial%'
+                  ORDER BY Instancia;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
 
 
 #%%===========================================================================
@@ -641,21 +673,38 @@ dataframeResultado = duckdb.sql(consultaSQL)
 # a1.- Listar a cada alumno que rindió el Parcial-01 y decir si aprobó o no (se aprueba con nota >=4).
     
 consultaSQL = """
-
+                  SELECT Nombre,Nota,
+                  CASE WHEN Nota>=4
+                  THEN 'APROBÓ'
+                  ELSE 'NO APROBÓ'
+                  END AS Estado
+                  FROM examen
+                  WHERE Instancia='Parcial-01'
+                  ORDER BY Nombre;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
 
 
 #%%-----------
 # a2.- Modificar la consulta anterior para que informe cuántos estudiantes aprobaron/reprobaron en cada instancia.
     
 consultaSQL = """
-
+                  SELECT Instancia,
+                  CASE WHEN Nota>=4
+                  THEN 'APROBÓ'
+                  ELSE 'NO APROBÓ'
+                  END AS Estado,
+                  COUNT(*) as Cantidad
+                  FROM examen
+                  GROUP BY Instancia, Estado
+                  ORDER BY Instancia, Estado;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
 
+print(dataframeResultado)
 
 #%%===========================================================================
 # Ejercicios SQL - Subqueries
@@ -663,32 +712,83 @@ dataframeResultado = duckdb.sql(consultaSQL)
 #a.- Listar los alumnos que en cada instancia obtuvieron una nota mayor al promedio de dicha instancia
 
 consultaSQL = """
-
+                  SELECT e1.Nombre, e1.Instancia, e1.Nota
+                  FROM examen AS e1
+                  WHERE e1.Nota > (
+                  SELECT AVG(e2.Nota)
+                  FROM examen AS e2
+                  WHERE e2.Instancia = e1.Instancia
+                  )
+                  ORDER BY Instancia ASC, Nota DESC;
               """
 
 
 dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
 
 
 #%%-----------
 # b.- Listar los alumnos que en cada instancia obtuvieron la mayor nota de dicha instancia
 
 consultaSQL = """
-
+                  SELECT e1.Nombre, e1.Instancia, e1.Nota
+                  FROM examen AS e1
+                  WHERE e1.Nota >= ALL (
+                  SELECT e2.Nota
+                  FROM examen AS e2
+                  WHERE e2.Instancia = e1.Instancia
+                  )
+                  ORDER BY e1.Instancia ASC, e1.Nombre ASC
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
 
+#print(dataframeResultado)
+#%%-----------
+# b'.- Listar los alumnos que en cada instancia obtuvieron la mayor nota de dicha instancia
+consultaSQL = """
+                  SELECT e1.Nombre, e1.Instancia, e1.Nota
+                  FROM examen AS e1
+                  WHERE e1.Nota >=(
+                  SELECT MAX(e2.Nota)
+                  FROM examen AS e2
+                  WHERE e2.Instancia = e1.Instancia
+                  )
+                  ORDER BY e1.Instancia ASC, e1.Nombre ASC
+              """
+print(dataframeResultado)
+#PUEDE DEVOLVER VARIAS TUPLAS EN UNA INSTANCIA
 
 #%%-----------
 # c.- Listar el nombre, instancia y nota sólo de los estudiantes que no rindieron ningún Recuperatorio
 
 consultaSQL = """
-
+                  SELECT e1.Nombre, e1.Instancia, e1.Nota
+                  FROM examen AS e1
+                  WHERE NOT EXISTS (
+                  SELECT e2.Nombre
+                  FROM examen AS e2
+                  WHERE e2.Nombre = e1.Nombre AND
+                  e2.Instancia LIKE 'Recuperatorio%'
+                  )
+                  ORDER BY e1.Nombre ASC, e1.Instancia ASC;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
-
+print(dataframeResultado)
+#%%-----------
+consultaSQL = """
+                  SELECT e1.Nombre, e1.Instancia, e1.Nota
+                  FROM examen AS e1
+                  WHERE e1.Nombre NOT IN (
+                  SELECT e2.Nombre
+                  FROM examen as e2
+                  WHERE e2.Instancia LIKE 'Recuperatorio%'
+                  )
+                  ORDER BY e1.Nombre ASC, e1.Instancia ASC;
+              """
+dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
 
 #%%===========================================================================
 # Ejercicios SQL - Integrando variables de Python
@@ -698,7 +798,9 @@ dataframeResultado = duckdb.sql(consultaSQL)
 umbralNota = 7
 
 consultaSQL = """
-
+                  SELECT Nombre, Instancia, Nota
+                  FROM Examen
+                  WHERE Nota > $umbralNota;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
@@ -719,40 +821,63 @@ dataframeResultado = duckdb.sql(consultaSQL)
 # b.- Listar todas las tuplas de Examen03 cuyas Notas son mayores o iguales a 9
 
 consultaSQL = """
-
+                  SELECT *
+                  FROM examen03
+                  WHERE Nota < 9;
               """
 
 
 dataframeResultado = duckdb.sql(consultaSQL)
-
+print(dataframeResultado)
 
 #%%-----------
 # c.- Listar el UNION de todas las tuplas de Examen03 cuyas Notas son menores a 9 y las que son mayores o iguales a 9
 
 consultaSQL = """
-
+                  SELECT *
+                  FROM examen03
+                  WHERE Nota < 5
+                  UNION
+                  SELECT *
+                  FROM examen03
+                  WHERE Nota >= 5;
               """
 
-
 dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
+#DE ESTA MANERA NO TOMA NOTAS NULAS
 
+#%%-----------
+#Otra manera: 
+
+consultaSQL = """
+                  SELECT *
+                  FROM examen03
+                  WHERE Nota IS NOT NULL;
+
+              """
+dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
 
 #%%-----------
 # d1.- Obtener el promedio de notas
 
 consultaSQL = """
-
+                  SELECT AVG(Nota) AS NotaPromedio
+                  FROM examen03;
               """
 
 
 dataframeResultado = duckdb.sql(consultaSQL)
+print(dataframeResultado)
 
 
 #%%-----------
 # d2.- Obtener el promedio de notas (tomando a NULL==0)
 
 consultaSQL = """
-
+                  SELECT AVG(CASE WHEN Nota IS NULL THEN 0 ELSE Nota END) AS NotaPromedio
+                  FROM examen03;
               """
 
 
@@ -764,7 +889,8 @@ dataframeResultado = duckdb.sql(consultaSQL)
 # a.- Consigna: Transformar todos los caracteres de las descripciones de los roles a mayúscula
 
 consultaSQL = """
-
+                  SELECT empleado, UPPER(rol) AS rol
+                  FROM empleadoRol;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
@@ -773,7 +899,8 @@ dataframeResultado = duckdb.sql(consultaSQL)
 # b.- Consigna: Transformar todos los caracteres de las descripciones de los roles a minúscula
 
 consultaSQL = """
-
+                  SELECT empleado, LOWER(rol) AS rol
+                  FROM empleadoRol;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
@@ -787,11 +914,12 @@ dataframeResultado = duckdb.sql(consultaSQL)
 # a.- Consigna: En la descripción de los roles de los empleados reemplazar las ñ por ni
 
 consultaSQL = """
-
+SELECT empleado, REPLACE(rol,'ñ','ni') AS rol
+FROM empleadoRol;
               """
 
 dataframeResultado = duckdb.sql(consultaSQL)
-
+print(dataframeResultado)
 
 #%%===========================================================================
 # Ejercicios SQL - Desafío
@@ -799,31 +927,138 @@ dataframeResultado = duckdb.sql(consultaSQL)
 # a.- Mostrar para cada estudiante las siguientes columnas con sus datos: Nombre, Sexo, Edad, Nota-Parcial-01, Nota-Parcial-02, Recuperatorio-01 y , Recuperatorio-02
 
 # ... Paso 1: Obtenemos los datos de los estudiantes
-consultaSQL = """
 
+
+datos_con_nota_1er_parcial = """
+                                SELECT Nombre, Sexo, Edad, Nota AS "Parcial_01"
+                                FROM examen
+                                WHERE Instancia = 'Parcial-01';
+                             """
+
+
+datos_con_nota_2do_parcial = """
+                                SELECT Nombre, Sexo, Edad, Nota AS "Parcial_02"
+                                FROM examen
+                                WHERE Instancia = 'Parcial-02';
+                             """
+
+
+datos_con_nota_recu1 = """
+                          SELECT Nombre, Sexo, Edad, Nota AS "Recuperatorio_01"
+                          FROM examen
+                          WHERE Instancia = 'Recuperatorio-01';
+                      """
+
+datos_con_nota_recu2 = """
+                          SELECT Nombre, Sexo, Edad, Nota AS "Recuperatorio_02"
+                          FROM examen
+                          WHERE Instancia = 'Recuperatorio-02';
+
+                      """                 
+consultaSQL = """
+                SELECT 
+                    e1.Nombre, 
+                    e1.Sexo, 
+                    e1.Edad, 
+                    e1."Parcial_01", 
+                    e2."Parcial_02", 
+                    e3."Recuperatorio_01", 
+                    e4."Recuperatorio_02"
+                FROM 
+                   datos_con_nota_1er_parcial e1
+
+                LEFT OUTER JOIN 
+                    datos_con_nota_2do_parcial e2
+                    ON e1.Nombre = e2.Nombre AND e1.Sexo = e2.Sexo AND e1.Edad = e2.Edad
+                LEFT OUTER JOIN 
+                    datos_con_nota_recu1 e3
+                    ON e1.Nombre = e3.Nombre AND e1.Sexo = e3.Sexo AND e1.Edad = e3.Edad
+                LEFT OUTER JOIN 
+                   datos_con_nota_recu2 e4
+                    ON e1.Nombre = e4.Nombre AND e1.Sexo = e4.Sexo AND e1.Edad = e4.Edad;
               """
 
+datos_con_nota_1er_parcial=duckdb.sql(datos_con_nota_1er_parcial)
+datos_con_nota_2do_parcial=duckdb.sql(datos_con_nota_2do_parcial)
+datos_con_nota_recu1=duckdb.sql(datos_con_nota_recu1)
+datos_con_nota_recu2=duckdb.sql(datos_con_nota_recu2)
+desafio_01 = duckdb.sql(consultaSQL)
+#print(desafio_01)
 
-desafio_01 = consultaSQL
+#Otra forma de hacer el ejercicio:     
+consultaSQL2 = """
+    SELECT 
+        e1.Nombre, 
+        e1.Sexo, 
+        e1.Edad, 
+        e1."Parcial-01", 
+        e2."Parcial-02", 
+        e3."Recuperatorio-01", 
+        e4."Recuperatorio-02"
+    FROM 
+        (SELECT Nombre, Sexo, Edad, Nota AS "Nota-Parcial-01"
+         FROM examen
+         WHERE Instancia = 'Parcial-01') e1
+    LEFT JOIN 
+        (SELECT Nombre, Sexo, Edad, Nota AS "Nota-Parcial-02"
+         FROM examen
+         WHERE Instancia = 'Parcial-02') e2
+        ON e1.Nombre = e2.Nombre AND e1.Sexo = e2.Sexo AND e1.Edad = e2.Edad
+    LEFT JOIN 
+        (SELECT Nombre, Sexo, Edad, Nota AS "Recuperatorio-01"
+         FROM examen
+         WHERE Instancia = 'Recuperatorio-01') e3
+        ON e1.Nombre = e3.Nombre AND e1.Sexo = e3.Sexo AND e1.Edad = e3.Edad
+    LEFT JOIN 
+        (SELECT Nombre, Sexo, Edad, Nota AS "Recuperatorio-02"
+         FROM examen
+         WHERE Instancia = 'Recuperatorio-02') e4
+        ON e1.Nombre = e4.Nombre AND e1.Sexo = e4.Sexo AND e1.Edad = e4.Edad;
+"""
 
-
+#desafio_01_bis = duckdb.sql(consultaSQL)
+#print(desafio_01_bis)
 
 #%% -----------
 # b.- Agregar al ejercicio anterior la columna Estado, que informa si el alumno aprobó la cursada (APROBÓ/NO APROBÓ). Se aprueba con 4.
+consultaSQL ="""
+                SELECT DISTINCT est.*,
+                    CASE 
+                        WHEN Parcial_01>=4 AND Parcial_02>=4  THEN 'APROBÓ'
+                        WHEN Parcial_01>=4 AND Recuperatorio_02>=4 THEN 'APROBÓ'
+                        WHEN Parcial_02>=4 AND Recuperatorio_01>=4 THEN 'APROBÓ'
+                        WHEN Recuperatorio_01>=4 AND Recuperatorio_02>=4 THEN 'APROBÓ'
+                        ELSE 'NO APROBÓ'
+                    END AS Estado
 
-consultaSQL = """
-                 
+                FROM desafio_01 est
               """
 
 desafio_02 = duckdb.sql(consultaSQL)
-
-
+print(desafio_02)
+#est.* está SELECCIONANDO todas las COLUMNAS de la tabla o resultado al 
+# que está haciendo referencia est.
 
 #%% -----------
 # c.- Generar la tabla Examen a partir de la tabla obtenida en el desafío anterior.
 
 consultaSQL = """
+                SELECT DISTINCT desafio_02.Nombre, 
+                    desafio_02.Sexo, 
+                    desafio_02.Edad, 
+                   CASE
+                    WHEN desafio_02.Parcial_01 IS NOT NULL THEN 'Parcial-01'
+                    WHEN desafio_02.Parcial_02 IS NOT NULL THEN 'Parcial-02'
+                    WHEN desafio_02.Recuperatorio_01 IS NOT NULL THEN 'Recuperatorio-01'
+                    WHEN desafio_02.Recuperatorio_02 IS NOT NULL THEN 'Recuperatorio-02'
+                   END AS Instancia
+                FROM desafio_02
 
               """
 
 desafio_03 = duckdb.sql(consultaSQL)
+print(desafio_03)
+#EN el select podes poner atributos o valores Select nombre, edad, 'colectivo', 3
+# y te va a generar una columna solo de colectivo y 3
+
+# %%
