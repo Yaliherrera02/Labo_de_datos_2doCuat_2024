@@ -218,14 +218,13 @@ arboles_en_los_andes=leer_parque("arbolado-en-espacios-verdes.csv","ANDES, LOS")
 #print(especimen_mas_inclinado(arboles_en_los_andes)) DADO UN ESPACIO VERDE RETORNA LA ESPECIE MAS INCLINADA DE TODAS LAS ESPECIES QUE HAY EN ESA LISTA
 
 def especie_promedio_mas_inclinada(lista_arboles:list[dict]):
-    especies_con_inclinaciones=[]
     lista_de_especies=especies(lista_arboles)
     inclinacion_mayor=0.0
     #especie_con_mayor_inclinacion = lista_de_especies[0]
     print(type(lista_de_especies), "\n",type(lista_arboles))
     for especie in lista_de_especies:
         #print(sum(obtener_inclinaciones(lista_arboles,especie)))
-        #print(len(obtener_inclinaciones(lista_arboles,especie))) #TENGO QUE SACAR LOS CEROS DE LA LISTA!!
+        #print(len(obtener_inclinaciones(lista_arboles,especie)))
         promedio_inclinacion= sum(obtener_inclinaciones(lista_arboles,especie))/len(obtener_inclinaciones(lista_arboles,especie))
         #especie_con_promedio_inclinacion=(especie,promedio_inclinacion)
         if promedio_inclinacion > inclinacion_mayor: 
@@ -234,10 +233,6 @@ def especie_promedio_mas_inclinada(lista_arboles:list[dict]):
         
         #especies_con_inclinaciones.append(especie_con_promedio_inclinacion)
     return inclinacion_mayor, especie_con_mayor_inclinacion
-    """
-    for i in range (0, len(especies_con_inclinaciones)):
-        if especies_con_inclinaciones[i][1]>inclinacion_mayor:
-            especie_con_mayor_inclinacion_promedio=(especies_con_inclinaciones[i][0],especies_con_inclinaciones[i][1])
-            return especie_con_mayor_inclinacion_promedio"""
+
         
 print("ESPECIE MAS INCLINADA",especie_promedio_mas_inclinada(arboles_en_los_andes))

@@ -35,6 +35,7 @@ def leer_parque(nombre_archivo, parque: str):
     return lista_con_info
 
 print(leer_parque("arboles.csv", "HOLANDA"))
+ 
 
 #print((leer_parque('arbolado-en-espacios-verdes.csv','GENERAL PAZ')))
 def especies(lista_arboles):

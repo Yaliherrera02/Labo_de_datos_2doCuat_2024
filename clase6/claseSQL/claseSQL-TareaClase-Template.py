@@ -957,10 +957,7 @@ datos_con_nota_recu2 = """
                       """                 
 consultaSQL = """
                 SELECT 
-                    e1.Nombre, 
-                    e1.Sexo, 
-                    e1.Edad, 
-                    e1."Parcial_01", 
+                    e1.*,
                     e2."Parcial_02", 
                     e3."Recuperatorio_01", 
                     e4."Recuperatorio_02"
@@ -983,7 +980,7 @@ datos_con_nota_2do_parcial=duckdb.sql(datos_con_nota_2do_parcial)
 datos_con_nota_recu1=duckdb.sql(datos_con_nota_recu1)
 datos_con_nota_recu2=duckdb.sql(datos_con_nota_recu2)
 desafio_01 = duckdb.sql(consultaSQL)
-#print(desafio_01)
+print(desafio_01)
 
 #Otra forma de hacer el ejercicio:     
 consultaSQL2 = """
@@ -1043,21 +1040,54 @@ print(desafio_02)
 # c.- Generar la tabla Examen a partir de la tabla obtenida en el desafío anterior.
 
 consultaSQL = """
-                SELECT DISTINCT desafio_02.Nombre, 
-                    desafio_02.Sexo, 
-                    desafio_02.Edad, 
-                   CASE
-                    WHEN desafio_02.Parcial_01 IS NOT NULL THEN 'Parcial-01'
-                    WHEN desafio_02.Parcial_02 IS NOT NULL THEN 'Parcial-02'
-                    WHEN desafio_02.Recuperatorio_01 IS NOT NULL THEN 'Recuperatorio-01'
-                    WHEN desafio_02.Recuperatorio_02 IS NOT NULL THEN 'Recuperatorio-02'
-                   END AS Instancia
-                FROM desafio_02
+                SELECT *
+                FROM (
+                SELECT 
+                    nombre,
+                    sexo,
+                    edad, 'Parcial-01' as Instancia, Parcial_01 as Nota
+                    From desafio_02
+                    where parcial_01 is NOT NULL
 
-              """
+                UNION
+                  SELECT 
+                    nombre,
+                    sexo,
+                    edad,
+                    'Parcial-02' as Instancia, Parcial_02 as Nota
+                    From desafio_02
+                    where parcial_02 is NOT NULL
+
+                 UNION
+                  SELECT 
+                    nombre,
+                    sexo,
+                    edad,'Recuperatorio-01' as Instancia, Recuperatorio_01 as Nota
+                    From desafio_02
+                    where recuperatorio_01 is NOT NULL
+                            
+                UNION
+                 SELECT 
+                    nombre,
+                    sexo,
+                    edad,
+                    'Recuperatorio-02' as Instancia, Recuperatorio_02 as Nota
+                    From desafio_02
+                    where recuperatorio_02 is NOT NULL)
+                ORDER BY Instancia
+        """
 
 desafio_03 = duckdb.sql(consultaSQL)
 print(desafio_03)
+
+#%% -----------
+ConsultaSQL = """ SELECT Nombre, Sexo, Edad, Instancia, Nota FROM (SELECT * FROM desafio_02
+                    unpivot (Nota for Instancia in
+                    (Parcial_01, Parcial_02, Recuperatorio_01, Recuperatorio_02))
+
+"""
+desafio_03_bis = duckdb.sql(consultaSQL)
+print(desafio_03_bis)
 #EN el select podes poner atributos o valores Select nombre, edad, 'colectivo', 3
 # y te va a generar una columna solo de colectivo y 3
 
