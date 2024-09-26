@@ -58,7 +58,6 @@ ax.set_xlabel('Acidez (g/dm3)', fontsize='medium')   # Nombre eje X
 ax.set_ylabel('Contenido de ácido cítrico (g/dm3)', 
               fontsize='medium')                     # Nombre eje Y
 
-
 #%%
 
 ##### 2. BUBBLE CHART
@@ -152,7 +151,7 @@ ax.bar(data=cheetahRegion, x='Anio', height='Ventas')
 
 # Genera el grafico de barras de las ventas mensuales (mejorando la informacion mostrada)
 fig, ax = plt.subplots()
-barras
+
 plt.rcParams['font.family'] = 'sans-serif'           
 
 
@@ -166,8 +165,7 @@ ax.set_ylim(0, 250)
 
 ax.set_xticks(range(1,11,1))               # Muestra todos los ticks del eje x
 ax.set_yticks([])                          # Remueve los ticks del eje y
-ax.bar_label(ax.containers[0], fontsize=8) 
-  # Agrega la etiqueta a cada barra
+ax.bar_label(ax.containers[0], fontsize=8)   # Agrega la etiqueta a cada barra
 #%%
 ##### 5. GRAFICO DE BARRAS AGRUPADAS
 
@@ -219,24 +217,6 @@ plt.legend()                    # Muestra la leyenda
 
 
 #%%
-##### 7. GRAFICO DE LINEAS
-# Genera el grafico de la serie temporal (grafico por defecto)
-plt.scatter(data=cheetahRegion, x='Anio', y='Ventas')
-
-# Genera el grafico de la serie temporal (mejorando la informacion mostrada)
-fig, ax = plt.subplots()
-
-plt.rcParams['font.family'] = 'sans-serif'           
-
-ax.plot('Anio', 'Ventas', data=cheetahRegion, marker="o")
-
-ax.set_title('Ventas de la compañía Cheetah Sports')
-ax.set_xlabel('Año', fontsize='medium')                       
-ax.set_ylabel('Ventas (millones de $)', fontsize='medium')    
-ax.set_xlim(0, 12)
-ax.set_ylim(0, 250)
-
-
 ##### 7. GRAFICO DE LINEAS
 # Genera el grafico de la serie temporal (grafico por defecto)
 plt.scatter(data=cheetahRegion, x='Anio', y='Ventas')
@@ -414,6 +394,8 @@ ax.tick_params(axis='x', labelrotation=0)                   # Rota las etiquetas
 # En formato porcentual
 # ax.set_title('Frecuencia Porcentual de Venta de Gaseosas')
 # ax.bar_label(ax.containers[0], fontsize=8, fmt='{:.2%}') # Agrega la etiqueta a cada barra en formato de porcentaje
+plt.show()                 
+
 
 #%%
 # # # # # # # # # # # # # # # # # # # # # # # # 
@@ -535,6 +517,7 @@ ax.tick_params(bottom = False)                       # Remueve los ticks del eje
 
 #Agrega leyenda
 ax.legend(['Femenino', 'Masculino'], loc='upper left')
+plt.show()
 
 #%%
 # - - - - - - - - - - - - - - - - - 
